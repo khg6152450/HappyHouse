@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.mapper.NoticeMapper">
+
+	<insert id="insertNotice" parameterType="com.ssafy.happyhouse.domain.NoticeDto">
+		insert into notice(adminid, subject, content, regtime) 
+		values(#{adminid}, #{subject}, #{content}, now());
+	</insert>
+	
+	<select id="searchKey" resultType="com.ssafy.happyhouse.domain.NoticeDto" parameterType="com.ssafy.happyhouse.domain.KeyWordDto">
+		select noticeno, adminid, subject, content, regtime
+		from notice
+		<if test="key != null">
+			<if test="word != null">
+				where #{key} like %#{word}%
+			</if>
+		</if>
+		order by noticeno desc
+	</select>
+	
+	<select id="searchPage" resultType="com.ssafy.happyhouse.domain.NoticeDto" parameterType="com.ssafy.happyhouse.domain.PagingKeyWordDto">
+		select noticeno, adminid, subject, content, regtime
+		from notice
+		<if test="key != null">
+			<if test="#{word} != null">
+				where #{key} like %#{word}%
+			</if>
+		</if>
+		order by noticeno desc
+		limit #{currentPage}, #{sizePerPage}
+	</select>
+	
+	<select id="getTotalCount" resultType="com.ssafy.happyhouse.domain.NoticeDto" parameterType="com.ssafy.happyhouse.domain.PagingKeyWordDto">
+		select count(*)
+		from notice
+		<if test="key != null">
+			<if test="#{word} != null">
+				where #{key} like %#{word}%
+			</if>
+		</if>
+		order by noticeno desc
+		limit #{currentPage}, #{sizePerPage}
+	</select>
+	
+	<select id="detail" resultType="com.ssafy.happyhouse.domain.NoticeDto" parameterType="Integer">
+		select * 
+		from notice 
+		where noticeno = #{noticeno}
+	</select>	
+	
+	<update id="update" parameterType="com.ssafy.happyhouse.domain.NoticeDto">
+		update notice 
+		set adminid = #{adminid}, subject = #{subject}, content = #{content}, regtime = now()
+		where noticeno = #{noticeno}
+	</update>
+	
+	<delete id="delete" parameterType="com.ssafy.happyhouse.domain.MemberDto">
+		delete from notice where noticeno = #{noticeno}
+	</delete>
+</mapper>

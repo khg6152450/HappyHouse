@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.mapper.MemberMapper">
+
+	<insert id="insertUser" parameterType="com.ssafy.happyhouse.domain.MemberDto">
+		insert into member(id,password,name,email,address_default,phoneNum,address_detail,postNum,homeNum) values(#{id}, #{password}, #{name},#{email}, #{address_default}, #{phoneNum}, #{address_detail}, #{postNum}, #{homeNum})
+	</insert>
+	
+	<select id="searchAll" resultType="com.ssafy.happyhouse.domain.MemberDto">
+		select id, password, name, address_default, phoneNum, address_detail, postNum, homeNum
+		from member
+	</select>
+	
+	<select id="search" resultType="com.ssafy.happyhouse.domain.MemberDto" parameterType="com.ssafy.happyhouse.domain.MemberDto">
+		select * 
+		from member 
+		where id = #{id} and password = #{password}
+	</select>
+	
+	<select id="searchById" resultType="com.ssafy.happyhouse.domain.MemberDto" parameterType="String">
+		select * 
+		from member 
+		where id = #{id}
+	</select>	
+	
+	<select id="searchPwd" resultType="com.ssafy.happyhouse.domain.MemberDto" parameterType="com.ssafy.happyhouse.domain.MemberDto">
+		select * 
+		from member 
+		where id = #{id} and name = #{name} and phoneNum = #{phoneNum}
+	</select>	
+	
+	<update id="update" parameterType="com.ssafy.happyhouse.domain.MemberDto">
+		update member 
+		set name = #{name}, email = #{email},address_default = #{address_default}, phoneNum = #{phoneNum}, address_detail = #{address_detail}, postNum = #{postNum}, homeNum = #{homeNum}, amount = #{amount}, buildYear = #{buildYear} ,area = #{area} 
+		where id = #{id} 
+	</update>
+	
+	<delete id="delete" parameterType="com.ssafy.happyhouse.domain.MemberDto">
+		delete from member where id = #{id}
+	</delete>
+	
+	<select id="check" resultType="com.ssafy.happyhouse.domain.MemberDto" >
+		select * 
+		from member 
+		where id = #{id} and password = #{password}
+	</select>
+</mapper>

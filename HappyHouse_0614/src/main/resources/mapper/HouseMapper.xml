@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.mapper.HouseMapper">
+
+	<select id="selectHouse" 
+			resultType="com.ssafy.happyhouse.domain.HouseDealDto" 
+			parameterType="com.ssafy.happyhouse.domain.SearchDto">
+		select 
+			no,
+			dong,
+			aptName,
+			dealAmount,
+			type
+		  from
+		  	housedeal
+		 order by
+		 	no
+		 limit
+		 	#{currentPage},
+		 	#{sizePerPage} 
+	</select>
+	
+	<select id="selectHouseByDong" 
+			resultType="com.ssafy.happyhouse.domain.HouseDealDto" 
+			parameterType="com.ssafy.happyhouse.domain.SearchDto">
+		select 
+			no,
+			dong,
+			aptName,
+			dealAmount,
+			type
+		  from
+		  	housedeal
+		 where
+		 	dong like CONCAT('%', #{searchWord}, '%')
+		 order by
+		 	no
+		 limit
+		 	#{currentPage},
+		 	#{sizePerPage} 
+	</select>
+	
+	<select id="selectHouseByName" 
+			resultType="com.ssafy.happyhouse.domain.HouseDealDto" 
+			parameterType="com.ssafy.happyhouse.domain.SearchDto">
+		select 
+			no,
+			dong,
+			aptName,
+			dealAmount,
+			type
+		  from
+		  	housedeal
+		 where
+		 	aptName like CONCAT('%', #{searchWord}, '%')
+		 order by
+		 	no
+		 limit
+		 	#{currentPage},
+		 	#{sizePerPage} 
+	</select>
+	
+	<select id="selectHouseByNo" resultType="com.ssafy.happyhouse.domain.HouseDealDto" parameterType="Integer">
+		select *
+		  from
+		  	housedeal
+		 where
+		 	no = #{no}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select
+			count(no)
+		  from
+		  	housedeal
+	</select>
+	
+	<select id="getSelectCount" resultType="int" 
+			parameterType="com.ssafy.happyhouse.domain.SearchDto">
+		select 
+			count(no)
+		  from
+		  	housedeal
+		 where
+		 <choose>
+		 	<when test="searchType == 'dong'">
+		 		dong like CONCAT('%', #{searchWord}, '%')
+		 	</when>
+		 	<otherwise>
+		 		aptName like CONCAT('%', #{searchWord}, '%')
+		 	</otherwise>
+		 </choose>
+		 	
+	</select>
+	
+	<select id="selectHouseinfoByNo" resultType="com.ssafy.happyhouse.domain.HouseInfoDto" parameterType="Integer">
+		select *
+		  from	houseinfo
+		 where 	no = #{no}
+	</select>
+	
+</mapper>

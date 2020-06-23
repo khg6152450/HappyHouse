@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.mapper.StoreMapper">
+
+   <select id="selectStore" 
+         resultType="com.ssafy.happyhouse.domain.StoreDto" 
+         parameterType="com.ssafy.happyhouse.domain.SearchDto">
+      select 
+         no,
+         shopname,
+         codename3,
+         address
+        from
+           store
+       order by
+          no
+       limit
+          #{currentPage},
+          #{sizePerPage} 
+   </select>
+   
+   <select id="selectStoreByDong" 
+         resultType="com.ssafy.happyhouse.domain.StoreDto" 
+         parameterType="com.ssafy.happyhouse.domain.SearchDto">
+      select 
+         no,
+         shopname,
+         codename3,
+         address
+        from
+           store
+       where
+          dong like CONCAT('%', #{searchWord}, '%')
+       order by
+          no
+       limit
+          #{currentPage},
+          #{sizePerPage} 
+   </select>
+   
+   <select id="selectStoreByCode" 
+         resultType="com.ssafy.happyhouse.domain.StoreDto" 
+         parameterType="com.ssafy.happyhouse.domain.SearchDto">
+      select 
+         no,
+         shopname,
+         codename3,
+         address
+        from
+           store
+       where
+          codename3 like CONCAT('%', #{searchWord}, '%')
+       order by
+          no
+       limit
+          #{currentPage},
+          #{sizePerPage} 
+   </select>
+   
+   <select id="getTotalCount" resultType="int">
+      select
+         count(no)
+        from
+           store
+   </select>
+   
+   <select id="getSelectCount" resultType="int" 
+         parameterType="com.ssafy.happyhouse.domain.SearchDto">
+      select 
+         count(no)
+        from
+           store
+       where
+          <choose>
+          <when test="searchType == 'dong'">
+             dong like CONCAT('%', #{searchWord}, '%')
+          </when>
+          <otherwise>
+             codename3 like CONCAT('%', #{searchWord}, '%')
+          </otherwise>
+       </choose>
+   </select>
+</mapper>
